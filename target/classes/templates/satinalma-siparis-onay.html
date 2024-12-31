@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Satınalma Sipariş Onay Talepleri</title>
+	<link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+	<div class="request-container">
+		<h1>Satınalma Sipariş Onay Talepleri</h1>
+
+		<!-- İstek Durumu Seçimi -->
+		<form th:action="@{/page/satinalma/siparis}" method="get" class="filter-form">
+			<label for="satSipDurum">İstek Durumu:</label>
+			<select name="satSipDurum" id="satSipDurum" onchange="this.form.submit()">
+				<option value="B" th:selected="${satSipDurum == 'B'}">Onay Bekleyen</option>
+				<option value="O" th:selected="${satSipDurum == 'O'}">Onaylı</option>
+				<option value="I" th:selected="${satSipDurum == 'I'}">İptal Edilen</option>
+			</select>
+		</form>
+
+		<!-- Talepler Tablosu -->
+		<table>
+			<thead>
+				<tr>
+					<th style="width: 50%;">Sipariş Detayı</th>
+					<th style="width: 15%;">Kayıt Tarihi</th>
+					<th style="width: 35%;">İşlemler</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="request : ${onayTalepleri}">
+					<td style="white-space: pre-line;" th:text="${request.text}"></td>
+					<td th:text="${#dates.format(request.tarih, 'dd-MM-yyyy')}" style="width: 15%;"></td>
+					<td style="width: 35%;">
+						<div th:if="${satSipDurum == 'B'}">
+							<input type="text" id="sipAciklama" name="sipAciklama" placeholder="Açıklama" style="width: 90%;" required>
+							<div class="error-message" id="errorMessage" style="color: red; display: none;">Reddetmek
+								için açıklama zorunludur.</div>
+
+							<!-- Butonlar sadece 'B' durumunda aktif, diğer durumlarda uyarı gösteriliyor -->
+
+							<!-- Kabul formu -->
+							<form th:action="@{/page/satinalma/siparis/onayla/{id}(id=${request.satSiparisDtId})}"
+								method="post" onsubmit="return confirmAction(this, 'Kabul')">
+								<input type="hidden" name="sipAciklama">
+								<button type="submit" class="approve-button">Kabul Et</button>
+							</form>
+
+							<!-- Reddet formu -->
+							<form th:action="@{/page/satinalma/siparis/reddet/{id}(id=${request.satSiparisDtId})}"
+								method="post" onsubmit="return confirmAction(this, 'Reddet')">
+								<input type="hidden" name="sipAciklama">
+								<button type="submit" class="red-button">Reddet</button>
+							</form>
+						</div>
+						<div th:if="${satSipDurum != 'B'}" style="color: red;">
+							<p>Sadece bekleme statüsündeki kayıtlarda işlem yapabilirsiniz.</p>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- Önceki ve Sonraki butonları ve sayfa bilgisi -->
+		<div class="pagination-container">
+			<div class="pagination-info">
+				<span th:text="' Sayfa: ' + ${currentPage + 1} +'/' + ${totalPages} "></span>
+			</div>
+			<div>
+				<span th:if="${currentPage > 0}">
+					<a th:href="@{/page/satinalma/siparis(page=${currentPage - 1}, size=${size}, satSipDurum=${satSipDurum})}"
+						class="pagination-button">Önceki</a>
+				</span>
+				<span th:if="${currentPage < totalPages - 1}">
+					<a th:href="@{/page/satinalma/siparis(page=${currentPage + 1}, size=${size}, satSipDurum=${satSipDurum})}"
+						class="pagination-button">Sonraki</a>
+				</span>
+			</div>
+		</div>
+
+		<!-- Ana Sayfaya Dön butonu -->
+		<form th:action="@{/index}" method="get">
+			<button type="submit" class="navigate-button">Ana Sayfaya Dön</button>
+		</form>
+	</div>
+
+	<script>
+		function setAciklama(form) {
+			var aciklamaValue = document.getElementById("sipAciklama").value;
+			form.querySelector('input[name="sipAciklama"]').value = aciklamaValue;
+			return true;
+		}
+
+		function confirmAction(form, actionType) {
+			setAciklama(form);
+			var aciklamaValue = form.querySelector('input[name="sipAciklama"]').value;
+			var errorMessage = document.getElementById("errorMessage");
+
+			// "Reddet" işlemi açıklama zorunluluğunu kontrol et
+			if (actionType === 'Reddet' && !aciklamaValue) {
+				errorMessage.style.display = "block"; // Hata mesajını göster
+				return false;
+			} else {
+				errorMessage.style.display = "none"; // Hata mesajını gizle
+			}
+
+			// Onaylama mesajını sayfa üzerinde göster
+			var confirmContainer = document.createElement("div");
+			confirmContainer.className = "confirmation-overlay";
+			confirmContainer.innerHTML = `
+		        <div class="confirmation-dialog">
+		            <p>İşlem ERP'ye kaydedilecek. Devam etmek istiyor musunuz?</p>
+		            <button class="yes-button" onclick="submitForm(true)">Evet</button>
+		            <button class="no-button" onclick="submitForm(false)">Hayır</button>
+		        </div>
+		    `;
+			document.body.appendChild(confirmContainer);
+
+			// Bu fonksiyon onay penceresine evet/hayır cevabı verir
+			window.submitForm = function (isConfirmed) {
+				document.body.removeChild(confirmContainer);
+				if (isConfirmed) form.submit();
+			};
+
+			return false; // Sayfa yenilenmesini engeller
+		}
+	</script>
+
+
+</body>
+
+</html>

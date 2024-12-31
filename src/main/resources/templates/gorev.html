@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Yap</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="login-container">
+    <!-- Task Execution Form -->
+    <form th:action="@{/gorev/gorev}" method="post">
+        <input type="hidden" name="gorevId" th:value="${gorevId}">
+        <button type="submit">Görevi Çalıştır</button>
+    </form>
+
+    <!-- Logout Form -->
+	<form th:action="@{/logout}" method="post">
+	    <button type="submit" class="logout-button">Çıkış Yap</button>
+	</form>
+</div>
+
+</body>
+</html>

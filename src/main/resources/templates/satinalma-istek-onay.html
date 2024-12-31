@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Satıalma İstek Onay Talepleri</title>
+	<link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+	<div class="request-container">
+		<h1>Satıalma İstek Onay Talepleri</h1>
+
+		<!-- İstek Durumu Seçimi -->
+		<form th:action="@{/page/satinalma/istek}" method="get" class="filter-form">
+			<label for="istekDurum">İstek Durumu:</label>
+			<select name="istekDurum" id="istekDurum" onchange="this.form.submit()">
+				<option value="01" th:selected="${istekDurum == '01'}">Onay Bekleyen</option>
+				<option value="02" th:selected="${istekDurum == '02'}">Onaylı</option>
+				<option value="07" th:selected="${istekDurum == '07'}">Red Edilen</option>
+			</select>
+		</form>
+
+		<!-- Talepler Tablosu -->
+		<table>
+			<thead>
+				<tr>
+					<th style="width: 50%;">İstek Detayı</th>
+					<th style="width: 15%;">Kayıt Tarihi</th>
+					<th style="width: 35%;">İşlemler</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="request : ${onayTalepleri}">
+					<!-- Yeni satır karakterlerinin korunması -->
+					<td style="white-space: pre-line;" th:text="${request.text}"></td>
+					<td th:text="${#dates.format(request.kayitTarihi, 'dd-MM-yyyy')}" style="width: 15%;"></td>
+					<td style="width: 35%;">
+						<div th:if="${istekDurum == '01'}">
+
+							<form th:action="@{/page/satinalma/istek/onayla/{id}(id=${request.istekDtId})}" method="post"
+								onsubmit="return confirmAction(this, 'Kabul')">
+								<button type="submit" class="approve-button">Kabul Et</button>
+							</form>
+
+							<form th:action="@{/page/satinalma/istek/reddet/{id}(id=${request.istekDtId})}" method="post"
+								onsubmit="return confirmAction(this, 'Reddet')">
+								<input type="text" name="redGerekcesi" placeholder="Red Gerekçesi" required>
+								<button type="submit" class="red-button">Reddet</button>
+							</form>
+						</div>
+						<div th:if="${istekDurum != '01'}" style="color: red;">
+							<p>Sadece bekleme statüsündeki kayıtlarda işlem yapabilirsiniz.</p>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- Önceki ve Sonraki butonları ve sayfa bilgisi -->
+		<div class="pagination-container">
+			<div class="pagination-info">
+				<span th:text="' Sayfa: ' + ${currentPage + 1} +'/' + ${totalPages}"></span>
+			</div>
+			<div>
+				<span th:if="${currentPage > 0}">
+					<a th:href="@{/page/satinalma/istek(page=${currentPage - 1}, size=${size}, istekDurum=${istekDurum})}"
+						class="pagination-button">Önceki</a>
+				</span>
+				<span th:if="${currentPage < totalPages - 1}">
+					<a th:href="@{/page/satinalma/istek(page=${currentPage + 1}, size=${size}, istekDurum=${istekDurum})}"
+						class="pagination-button">Sonraki</a>
+				</span>
+			</div>
+		</div>
+
+		<!-- Ana Sayfaya Dön butonu -->
+		<form th:action="@{/index}" method="get">
+			<button type="submit" class="navigate-button">Ana Sayfaya Dön</button>
+		</form>
+	</div>
+
+	<script>
+		function confirmAction(form, actionType) {
+			var aciklamaValue;
+			var errorMessage = document.getElementById("errorMessage");
+
+			// Onaylama mesajını sayfa üzerinde göster
+			var confirmContainer = document.createElement("div");
+			confirmContainer.className = "confirmation-overlay";
+			confirmContainer.innerHTML = `
+		        <div class="confirmation-dialog">
+		            <p>İşlem ERP'ye kaydedilecek. Devam etmek istiyor musunuz?</p>
+		            <button class="yes-button" onclick="submitForm(true)">Evet</button>
+		            <button class="no-button" onclick="submitForm(false)">Hayır</button>
+		        </div>
+		    `;
+			document.body.appendChild(confirmContainer);
+
+			// Bu fonksiyon onay penceresine evet/hayır cevabı verir
+			window.submitForm = function (isConfirmed) {
+				document.body.removeChild(confirmContainer);
+				if (isConfirmed) form.submit();
+			};
+
+			return false; // Sayfa yenilenmesini engeller
+		}
+	</script>
+</body>
+
+</html>

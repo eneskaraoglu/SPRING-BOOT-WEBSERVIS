@@ -1,0 +1,282 @@
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	display: flex;
+	/* Keep flex for centering */
+	justify-content: center;
+	align-items: flex-start;
+	/* Center items at the top */
+	height: auto;
+	/* Auto height to fit content */
+	margin: 0;
+	padding: 20px;
+	/* Add some padding around the content */
+}
+
+.request-container {
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	/* Full width of the container */
+	max-width: 800px;
+	/* Set maximum width for larger screens */
+}
+
+h1 {
+	text-align: center;
+	color: #333;
+	margin-bottom: 20px;
+	/* Space below the heading */
+}
+
+/* Table styles */
+table {
+	width: 100%;
+	/* Full width of the container */
+	border-collapse: collapse;
+	/* Merge table borders */
+	margin-bottom: 20px;
+	/* Space below the table */
+}
+
+th,
+td {
+	padding: 12px;
+	/* Add padding to cells */
+	text-align: center;
+	/* Center align text in cells */
+	border-bottom: 1px solid #ddd;
+	/* Add bottom border to rows */
+}
+
+th {
+	background-color: #5cb85c;
+	/* Green background for the header */
+	color: white;
+	/* White text in the header */
+}
+
+tr:hover {
+	background-color: #f1f1f1;
+	/* Change background on hover */
+}
+
+/* Form styles */
+form {
+	display: block;
+	/* Each form takes up the full width */
+	margin-bottom: 10px;
+	/* Space between forms */
+}
+
+input[type="text"],
+input[type="password"] {
+	width: 100%;
+	padding: 10px;
+	margin-top: 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button {
+	width: 100%;
+	padding: 10px;
+	background-color: #5cb85c;
+	border: none;
+	color: white;
+	font-size: 16px;
+	border-radius: 4px;
+	margin-top: 10px;
+	/* Space above the button */
+	cursor: pointer;
+	transition: background-color 0.3s;
+	/* Smooth transition for hover effect */
+}
+
+button:hover {
+	background-color: #4cae4c;
+	/* Darker green on hover */
+}
+
+.logout-button {
+	background-color: #d9534f;
+	/* Red color */
+}
+
+.logout-button:hover {
+	background-color: #c9302c;
+	/* Darker red on hover */
+}
+
+form input[name="redGerekcesi"] {
+	width: 100%;
+	/* Genişliği kontrol et */
+	margin-right: 10px;
+	/* Butonla araya boşluk ekle */
+	box-sizing: border-box;
+	/* İç dolguya göre genişliği hesapla */
+}
+
+form input[name="sipAciklama"] {
+    width: 100%; /* Genişliği kontrol et */
+    margin-right: 10px; /* Butonla araya boşluk ekle */
+    box-sizing: border-box; /* İç dolguya göre genişliği hesapla */
+    height: 30px; /* Yüksekliği ayarlamak isterseniz ekleyin */
+    padding: 5px; /* İçerideki boşluk */
+    border: 1px solid #ccc; /* Kenar rengi */
+    border-radius: 4px; /* Kenar yuvarlama */
+}
+
+.red-button {
+	background-color: #d9534f;
+	/* Kırmızı arka plan rengi */
+	color: white;
+	/* Beyaz metin rengi */
+	border: none;
+	/* Kenarlık yok */
+	padding: 10px;
+	/* Dış boşluk */
+	border-radius: 4px;
+	/* Kenar yuvarlama */
+	cursor: pointer;
+	/* İmleci değiştirme */
+	font-size: 16px;
+	/* Yazı boyutu */
+}
+
+.red-button:hover {
+	background-color: #c9302c;
+	/* Üzerine gelindiğinde koyu kırmızı */
+}
+
+.pagination-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 20px 0;
+}
+
+.pagination-info {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.pagination-button {
+	background-color: #4CAF50;
+	/* Yeşil arka plan */
+	color: white;
+	/* Beyaz yazı rengi */
+	border: none;
+	/* Kenarlık yok */
+	padding: 10px 15px;
+	/* İç boşluk */
+	text-align: center;
+	/* Ortala */
+	text-decoration: none;
+	/* Alt çizgi yok */
+	display: inline-block;
+	/* Inline-block yap */
+	margin: 0 5px;
+	/* Kenar boşluğu */
+	cursor: pointer;
+	/* İmleç */
+	border-radius: 5px;
+	/* Köşeleri yuvarla */
+}
+
+.pagination-button:hover {
+	background-color: #45a049;
+	/* Hover rengi */
+}
+
+table th,
+table td {
+	padding: 10px;
+	text-align: left;
+	border: 1px solid #ddd;
+}
+
+table th {
+	width: 30%;
+	/* İlk sütun genişliği */
+}
+
+table td:first-child {
+	width: 30%;
+	/* İlk sütun genişliği */
+}
+
+table td:nth-child(2) {
+	width: 20%;
+	/* İkinci sütun genişliği */
+}
+
+table td:nth-child(3) {
+	width: 50%;
+	/* Üçüncü sütun genişliği */
+}
+
+.confirmation-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.confirmation-dialog {
+	background: white;
+	padding: 20px;
+	border-radius: 8px;
+	text-align: center;
+}
+
+.yes-button {
+	background-color: green;
+	color: white;
+	border: none;
+	padding: 8px 16px;
+	margin: 5px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.no-button {
+	background-color: red;
+	color: white;
+	border: none;
+	padding: 8px 16px;
+	margin: 5px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.yes-button:hover {
+	background-color: darkgreen;
+}
+
+.no-button:hover {
+	background-color: darkred;
+}
+
+.swagger-button {
+    background-color: rgb(0, 180, 255); /* Açık mavi renk */
+    color: white; /* Yazı rengi beyaz */
+    border: none; /* Kenarlık yok */
+    padding: 10px 20px; /* İçerik boşluğu */
+    font-size: 16px; /* Yazı boyutu */
+    border-radius: 5px; /* Kenar yuvarlama */
+    cursor: pointer; /* Fare işareti */
+    transition: background-color 0.3s ease; /* Geçiş efekti */
+}
+
+.swagger-button:hover {
+    background-color: #1E90FF; /* Hover durumunda daha koyu mavi */
+}

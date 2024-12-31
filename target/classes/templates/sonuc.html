@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Görev Bilgileri</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .result-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center; /* Center the text */
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold; /* Make error text bold */
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container" th:if="${gorev}">
+        <h2>Görev Başarı İle Çalıştırıldı</h2>
+        <p th:text="${gorev}"></p>
+    </div>
+    <div class="result-container" th:if="${error}">
+        <h2>Görev Çalıştırılamadı!</h2>
+        <p class="error-message" th:text="${error}"></p>
+    </div>
+</body>
+</html>

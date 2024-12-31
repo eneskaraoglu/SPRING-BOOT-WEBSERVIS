@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Yap</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="login-container">
+    <!-- Task Execution Form -->
+    <form th:action="@{/gorev/gorev}" method="post">
+        <input type="hidden" name="gorevId" th:value="${gorevId}">
+        <button type="submit">Görevi Çalıştır</button>
+    </form>
+    
+	<form th:action="@{/page/satinalma/istek}" method="get">
+	    <button type="submit" class="gorevId-button">Satınalma İstekleri Onayla</button>
+	</form>
+	
+	<form th:action="@{/page/satinalma/siparis}" method="get">
+	    <button type="submit" class="gorevId-button">Satınalma Siparişler Onayla</button>
+	</form>
+	
+	 <!-- Swagger UI Button -->
+    <form action="/swagger-ui/index.html" target="_blank" method="get">
+        <button type="submit" class="swagger-button">Swagger UI</button>
+    </form>
+
+    <!-- Logout Form -->
+	<form th:action="@{/logout}" method="post">
+	    <button type="submit" class="logout-button">Çıkış Yap</button>
+	</form>
+</div>
+
+</body>
+</html>
